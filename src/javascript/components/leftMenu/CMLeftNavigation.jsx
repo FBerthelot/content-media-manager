@@ -20,7 +20,6 @@ const styles = theme => ({
         zIndex: 1,
         paddingLeft: '38px',
         background: '#f7f7f7',
-        fontFamily: "Nunito sans, sans-serif",
         minWidth: '105px',
         overflow: 'visible !important', //Safari compatibility
         "-webkit-transform-style": 'preserve-3d', //Safari compatibility
@@ -31,7 +30,7 @@ const styles = theme => ({
         zIndex: 0,
         minWidth: '105px',
         paddingLeft: '38px',
-        background: theme.palette.background.default,
+        background: theme.palette.layout.dark,
         overflow: 'hidden',
         height: '100%',
         display: 'flex',

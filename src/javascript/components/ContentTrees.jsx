@@ -30,7 +30,7 @@ const styles = theme => ({
     },
     tableCellHeight: {
         padding: '0px 0px 0px 10px',
-        color: '#5E6565',
+        color: theme.palette.text.secondary,
         '&:hover': {
             height: '28px',
             padding: '0px 0px 0px 10px',

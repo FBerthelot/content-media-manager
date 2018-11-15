@@ -134,6 +134,13 @@
     lodash "^4.17.10"
     zen-observable "^0.8.8"
 
+"@jahia/ds-mui-theme@^1.0.0-beta.20181115110345":
+  version "1.0.0-beta.20181115110345"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20181115110345.tgz#aaaaf2dc75650f638cf82ef5294b6bc08ba39de6"
+  dependencies:
+    "@material-ui/core" "^3.2.0"
+    lodash "^4.17.10"
+
 "@jahia/i18next@^1.0.0-beta.20180628145923":
   version "1.0.0-beta.20181025200620"
   resolved "http://npm.int.jahia.com:4873/@jahia%2fi18next/-/i18next-1.0.0-beta.20181025200620.tgz#d980c71e0857e941e76566cccf6a6049a3e2469a"
