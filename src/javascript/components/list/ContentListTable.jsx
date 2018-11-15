@@ -335,6 +335,20 @@ class ContentListTable extends React.Component {
                                     let cellContentClasses = {root: isSelected ? classes.selectedCell : classes.cell};
                                     let contextualMenu = React.createRef();
                                     let selectionColor = (n.publicationStatus === "MARKED_FOR_DELETION") ? classes.selectedRowMarkedForDeletion : classes.selectedRow;
+                                    let contextualMenuContext = {path:n.path};
+                                    if (!_.isEmpty(n.parents)) {
+                                        let parent = n.parents[n.parents.length-1];
+                                        let paths = [];
+                                        _.each(n.parents, (parent)=>{
+                                            paths.push(parent.path);
+                                        });
+                                        contextualMenuContext.locate = {
+                                            node: n,
+                                            paths: paths,
+                                            navigateToPath:parent.path,
+                                            type:parent.type.value
+                                        };
+                                    }
                                     return (
                                         <TableRow
                                             hover={true}
@@ -350,7 +364,7 @@ class ContentListTable extends React.Component {
                                             onMouseLeave={(event) => this.onHoverExit(event)}
                                             onContextMenu={(event) => contextualMenu.current.open(event)}
                                             >
-                                                <ContextualMenu actionKey={"contextualMenuContent"} context={{path: n.path}} ref={contextualMenu}/>
+                                                <ContextualMenu actionKey={"contextualMenuContent"} context={contextualMenuContext} ref={contextualMenu}/>
 
                                                 <TableCell className={classes.publicationCell} data-cm-role="table-content-list-cell-publication">
                                                     <PublicationStatus node={n} publicationInfoWidth={400}/>

@@ -23,6 +23,7 @@ import sideMenuListAction from "./sideMenuListAction";
 import openInEditModeAction from "./openInEditModeAction";
 import unlockAction from "./unlockAction";
 import clearAllLocksAction from "./clearAllLocksAction";
+import locateAction from "./locateAction";
 
 function initActions(actionsRegistry) {
     actionsRegistry.add('router', routerAction);
@@ -340,7 +341,11 @@ function initActions(actionsRegistry) {
         buttonIcon: <Edit/>,
         target: [ 'contentTreeMenuActions', 'contextualMenuContentAction' ],
     });
-
+    actionsRegistry.add('locate', locateAction, {
+        buttonLabel: 'label.contentManager.actions.locate',
+        target: ['contextualMenuContentAction'],
+        hideOnNodeTypes: ['jnt:page', 'jnt:folder', "jnt:contentFolder"]
+    });
 }
 
 export default initActions;
