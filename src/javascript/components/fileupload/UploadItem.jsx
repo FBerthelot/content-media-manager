@@ -23,7 +23,7 @@ const styles = theme => ({
     },
     fileNameText: {
         width: 350,
-        maxWidth: 350,
+        // maxWidth: 350,
         '& span' : {
             color: "#555"
         }
@@ -81,6 +81,8 @@ class UploadItem extends React.Component {
     render() {
         const { classes, id, file, t } = this.props;
         const open = Boolean(this.state.anchorEl);
+
+        console.log("P", this.props.path);
 
         return <ApolloConsumer>{
             client => {
@@ -149,7 +151,8 @@ class UploadItem extends React.Component {
             const upload = {
                 id: this.props.id,
                 status: uploadStatuses.UPLOADED,
-                error: null
+                error: null,
+                path: this.props.path
             };
             setTimeout(() => {
                 this.props.dispatchBatch([
@@ -162,7 +165,8 @@ class UploadItem extends React.Component {
             const upload = {
                 id: this.props.id,
                 status: uploadStatuses.HAS_ERROR,
-                error: null
+                error: null,
+                path: this.props.path
             };
             if (e.message.indexOf("ItemExistsException") !== -1) {
                 upload.error = "FILE_EXISTS"
@@ -178,11 +182,11 @@ class UploadItem extends React.Component {
     }
 
     uploadFile() {
-        const { file } = this.props;
+        const { file, path } = this.props;
         const variables = {
             fileHandle: file,
             nameInJCR: this.state.userChosenName ? this.state.userChosenName : file.name,
-            path: this.props.path
+            path: path
         };
 
         if (isImageFile(file.name)) {
