@@ -15,6 +15,7 @@ import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import defaultIconRenderer from './iconRenderer';
 import {lodash as _} from "lodash";
+import UploadWrapperComponent from '../fileupload/UploadTransformComponent';
 
 let styles = (theme) => ({
     root: {
@@ -167,7 +168,9 @@ class CmPickerViewMaterial extends React.Component {
                         });
                         let selectionClass = hasDeletionMixin ? classes.listItemSelectedDeletion : classes.listItemSelected;
                         let itemClass = hasDeletionMixin ? classes.listItemDeletion : classes.listItem;
-                        return <ListItem
+                        return <UploadWrapperComponent
+                            uploadTargetComponent={ ListItem }
+                            uploadPath={ entry.path }
                             onMouseEnter={() => this.hoverOn(entry.path)}
                             onClick={() => this.hoverOn(entry.path)}
                             onMouseLeave={this.hoverOff}
@@ -221,7 +224,7 @@ class CmPickerViewMaterial extends React.Component {
                                 {this.state.hover === entry.path && actionsRenderer(entry)}
                             </ListItemText>
                             }
-                        </ListItem>
+                        </UploadWrapperComponent>
                     })
                 }
             </List>
