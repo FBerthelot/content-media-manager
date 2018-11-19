@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import {ApolloConsumer} from "react-apollo";
+import { withApollo } from "react-apollo";
 import { uploadFile, uploadImage, removeFile } from './gqlMutations';
 import { Button, CircularProgress, ListItem, ListItemText, Avatar, ListItemSecondaryAction, Popover, TextField } from "@material-ui/core";
 import { CheckCircle, Info,  FiberManualRecord, InsertDriveFile } from "@material-ui/icons";
@@ -81,14 +81,7 @@ class UploadItem extends React.Component {
     render() {
         const { classes, id, file, t } = this.props;
         const open = Boolean(this.state.anchorEl);
-
-        console.log("P", this.props.path);
-
-        return <ApolloConsumer>{
-            client => {
-                if (this.client === null) this.client = client;
-
-                return <ListItem className={classes.listItem}>
+        return <ListItem className={classes.listItem}>
                     { this.avatar() }
                     <ListItemText className={ classes.fileNameText } primary={ this.state.userChosenName ? this.state.userChosenName : file.name } />
                     <ListItemText className={ classes.fileNameText } primary={ this.statusText() } />
@@ -120,8 +113,6 @@ class UploadItem extends React.Component {
                         />
                     </Popover>
                 </ListItem>
-            }
-        }</ApolloConsumer>
     }
 
     rename(e) {
@@ -182,7 +173,7 @@ class UploadItem extends React.Component {
     }
 
     uploadFile() {
-        const { file, path } = this.props;
+        const { file, path, client } = this.props;
         const variables = {
             fileHandle: file,
             nameInJCR: this.state.userChosenName ? this.state.userChosenName : file.name,
@@ -190,7 +181,7 @@ class UploadItem extends React.Component {
         };
 
         if (isImageFile(file.name)) {
-            return this.client.mutate({
+            return client.mutate({
                 mutation: uploadImage,
                 variables: {
                     ...variables,
@@ -199,7 +190,7 @@ class UploadItem extends React.Component {
             });
         }
 
-        return this.client.mutate({
+        return client.mutate({
             mutation: uploadFile,
             variables: {
                 ...variables,
@@ -337,15 +328,14 @@ class UploadItem extends React.Component {
     }
 
     async replaceFile() {
-        const { file, path } = this.props;
+        const { file, path, client } = this.props;
         try {
-            await this.client.mutate({
+            await client.mutate({
                 mutation: removeFile,
                 variables: {
                     pathOrId: path + "/" + file.name
                 }
             });
-            console.log("DDD", this.props);
             this.changeStatusToUploading()
         }
         catch (e) {
@@ -402,4 +392,5 @@ const mapDispatchToProps = (dispatch) => {
 export default _.flowRight(
     withStyles(styles),
     translate(),
+    withApollo,
     connect(mapStateToProps, mapDispatchToProps))(UploadItem);
