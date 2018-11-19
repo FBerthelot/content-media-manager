@@ -336,25 +336,29 @@ class UploadItem extends React.Component {
         })
     }
 
-    replaceFile() {
+    async replaceFile() {
         const { file, path } = this.props;
-        this.client.mutate({
-            mutation: removeFile,
-            variables: {
-                pathOrId: path + "/" + file.name
-            }
-        }).then(() => {
+        try {
+            await this.client.mutate({
+                mutation: removeFile,
+                variables: {
+                    pathOrId: path + "/" + file.name
+                }
+            });
+            console.log("DDD", this.props);
             this.changeStatusToUploading()
-        }).catch((e) => {
+        }
+        catch (e) {
             console.error(e);
-        })
+        }
     }
 
     changeStatusToUploading() {
         const upload = {
             id: this.props.id,
             status: uploadStatuses.UPLOADING,
-            error: null
+            error: null,
+            path: this.props.path
         };
         this.props.dispatch(updateUpload(upload));
     }

@@ -7,6 +7,7 @@ import { Grid } from '@material-ui/core';
 import { Pagination } from "@jahia/react-material";
 import { DxContext } from "../DxContext";
 import {withStyles} from "@material-ui/core";
+import UploadTransformComponent from "../fileupload/UploadTransformComponent";
 
 const styles = theme => ({
     grid: {
@@ -64,7 +65,7 @@ class FilesGrid extends Component {
     }
 
     render() {
-        const { size, t, handleShowPreview, contentNotFound, classes } = this.props;
+        const { size, t, handleShowPreview, contentNotFound, classes, path } = this.props;
         const {hoveredCard} = this.state;
 
         if (contentNotFound) {
@@ -86,27 +87,31 @@ class FilesGrid extends Component {
             </Grid>
             )
         }
-        return <div className={classes.grid}><Grid container>
-            {
-                this.props.rows.map((node) => (
-                    <Grid key={ node.uuid } item xs={ size }
-                          className={classes.centerGrid}
-                          onMouseEnter={($event) => this.onHoverEnter($event, node.path) }
-                          onMouseLeave={($event) => this.onHoverExit($event)}>
-                        <DxContext.Consumer>
-                            {
-                                dxContext => <FileCard cardType={ size }
-                                                       isHovered={node.path === hoveredCard}
-                                                       node={ {...node, displayName: node.name} }
-                                                       dxContext={ dxContext }
-                                                       handleShowPreview={handleShowPreview}/>
-                            }
-                        </DxContext.Consumer>
-                    </Grid>
-                ))
-            }
-            <Pagination totalCount={this.props.totalCount} pageSize={this.props.pageSize} currentPage={this.props.page} onChangeRowsPerPage={this.props.onChangeRowsPerPage} onChangePage={this.props.onChangePage}/>
-        </Grid></div>
+
+        return <div className={classes.grid}>
+                <UploadTransformComponent uploadTargetComponent={ Grid } uploadPath={ path } container>
+                    {
+                        this.props.rows.map((node) => (
+                            <Grid key={ node.uuid }
+                                  item xs={ size }
+                                  className={classes.centerGrid}
+                                  onMouseEnter={($event) => this.onHoverEnter($event, node.path) }
+                                  onMouseLeave={($event) => this.onHoverExit($event)}>
+                                <DxContext.Consumer>
+                                    {
+                                        dxContext => <FileCard cardType={ size }
+                                                               isHovered={node.path === hoveredCard}
+                                                               node={ {...node, displayName: node.name} }
+                                                               dxContext={ dxContext }
+                                                               handleShowPreview={handleShowPreview}/>
+                                    }
+                                </DxContext.Consumer>
+                            </Grid>
+                        ))
+                    }
+                <Pagination totalCount={this.props.totalCount} pageSize={this.props.pageSize} currentPage={this.props.page} onChangeRowsPerPage={this.props.onChangeRowsPerPage} onChangePage={this.props.onChangePage}/>
+            </UploadTransformComponent>
+        </div>
     }
 }
 
